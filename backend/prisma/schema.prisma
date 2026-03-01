@@ -1,0 +1,71 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Sport {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  icon      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  events    Event[]
+}
+
+model StreamingService {
+  id        String           @id @default(cuid())
+  name      String           @unique
+  slug      String           @unique
+  logoUrl   String?
+  type      ServiceType      @default(streaming)
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+  events    EventBroadcast[]
+}
+
+model Event {
+  id          String           @id @default(cuid())
+  sportId     String
+  competition String
+  homeTeam    String?
+  awayTeam    String?
+  description String?
+  eventDate   DateTime
+  eventTime   String
+  source      String
+  sourceHash  String           @unique
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  sport       Sport            @relation(fields: [sportId], references: [id], onDelete: Restrict)
+  broadcasts  EventBroadcast[]
+
+  @@index([eventDate])
+}
+
+model EventBroadcast {
+  eventId   String
+  serviceId String
+  event     Event             @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  service   StreamingService  @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+
+  @@id([eventId, serviceId])
+}
+
+model SourceLog {
+  id           String   @id @default(cuid())
+  source       String
+  fetchedAt    DateTime @default(now())
+  status       String
+  eventCount   Int      @default(0)
+  errorMessage String?
+}
+
+enum ServiceType {
+  streaming
+  tv
+  free_online
+}

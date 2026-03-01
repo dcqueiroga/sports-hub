@@ -1,0 +1,30 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: sports-hub-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: sports_hub
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "55432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: ./backend
+    container_name: sports-hub-backend
+    restart: unless-stopped
+    environment:
+      PORT: 4000
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/sports_hub?schema=public
+      SCRAPER_TIMEZONE: America/Sao_Paulo
+    ports:
+      - "4000:4000"
+    depends_on:
+      - postgres
+
+volumes:
+  pgdata:
