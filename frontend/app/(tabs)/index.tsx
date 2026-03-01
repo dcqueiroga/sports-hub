@@ -1,7 +1,7 @@
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { useMemo, useState } from "react";
-import { ActivityIndicator, FlatList, Text, View } from "react-native";
+import { ActivityIndicator, FlatList, Image, Text, View } from "react-native";
 import { DaySelector } from "@/components/DaySelector";
 import { EventCard } from "@/components/EventCard";
 import { SportFilter } from "@/components/SportFilter";
@@ -23,16 +23,20 @@ export default function HomeScreen() {
   }, [date]);
 
   return (
-    <View className="flex-1 bg-slate-100 px-4 pt-4">
-      <Text className="mb-1 text-2xl font-bold text-slate-900">Sports Hub</Text>
-      <Text className="mb-2 text-sm text-slate-600">{title}</Text>
+    <View className="flex-1 bg-zinc-950 px-4 pt-4">
+      <Image
+        source={require("@/assets/images/logo-onde-passa.png")}
+        style={{ width: 160, height: 40 }}
+        resizeMode="contain"
+      />
+      <Text className="mb-2 text-sm text-zinc-400">{title}</Text>
 
       <DaySelector selectedDate={date} onSelectDate={setDate} />
       <SportFilter sports={sports} selectedSport={selectedSport} onSelectSport={setSelectedSport} />
 
       {isLoading ? (
         <View className="flex-1 items-center justify-center">
-          <ActivityIndicator size="large" />
+          <ActivityIndicator size="large" color="#22d3ee" />
         </View>
       ) : (
         <FlatList
@@ -40,7 +44,7 @@ export default function HomeScreen() {
           keyExtractor={(item) => item.id}
           contentContainerStyle={{ paddingTop: 8, paddingBottom: 24 }}
           renderItem={({ item }) => <EventCard event={item} />}
-          ListEmptyComponent={<Text className="py-6 text-center text-slate-500">Nenhum evento encontrado.</Text>}
+          ListEmptyComponent={<Text className="py-6 text-center text-zinc-500">Nenhum evento encontrado.</Text>}
         />
       )}
     </View>

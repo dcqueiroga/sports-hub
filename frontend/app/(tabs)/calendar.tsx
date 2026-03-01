@@ -1,6 +1,6 @@
 import { format } from "date-fns";
 import { useState } from "react";
-import { ActivityIndicator, FlatList, Text, View } from "react-native";
+import { ActivityIndicator, FlatList, Image, Text, View } from "react-native";
 import { DaySelector } from "@/components/DaySelector";
 import { EventCard } from "@/components/EventCard";
 import { useEvents } from "@/hooks/useEvents";
@@ -14,14 +14,21 @@ export default function CalendarScreen() {
   const { data: events = [], isLoading } = useEvents(date);
 
   return (
-    <View className="flex-1 bg-slate-100 px-4 pt-4">
-      <Text className="mb-1 text-2xl font-bold text-slate-900">Calendario</Text>
-      <Text className="mb-2 text-sm text-slate-600">Selecione o dia para ver a programacao</Text>
+    <View className="flex-1 bg-zinc-950 px-4 pt-4">
+      <View className="mb-1 flex-row items-center gap-2">
+        <Image
+          source={require("@/assets/images/icon.png")}
+          style={{ width: 28, height: 28, borderRadius: 6 }}
+          resizeMode="contain"
+        />
+        <Text className="text-2xl font-bold text-zinc-50">Calendário</Text>
+      </View>
+      <Text className="mb-2 text-sm text-zinc-400">Selecione o dia para ver a programação</Text>
       <DaySelector selectedDate={date} onSelectDate={setDate} />
 
       {isLoading ? (
         <View className="flex-1 items-center justify-center">
-          <ActivityIndicator size="large" />
+          <ActivityIndicator size="large" color="#22d3ee" />
         </View>
       ) : (
         <FlatList
@@ -29,7 +36,7 @@ export default function CalendarScreen() {
           keyExtractor={(item) => item.id}
           contentContainerStyle={{ paddingTop: 8, paddingBottom: 24 }}
           renderItem={({ item }) => <EventCard event={item} />}
-          ListEmptyComponent={<Text className="py-6 text-center text-slate-500">Nenhum evento nesse dia.</Text>}
+          ListEmptyComponent={<Text className="py-6 text-center text-zinc-500">Nenhum evento nesse dia.</Text>}
         />
       )}
     </View>

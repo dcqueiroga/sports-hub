@@ -6,10 +6,15 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: "#2563eb",
-        tabBarInactiveTintColor: "#64748b",
-        tabBarStyle: { backgroundColor: "#ffffff" },
+        tabBarActiveTintColor: "#22d3ee",
+        tabBarInactiveTintColor: "#71717a",
+        tabBarStyle: {
+          backgroundColor: "#09090b",
+          borderTopColor: "#27272a"
+        },
         headerShown: useClientOnlyValue(false, true),
+        headerStyle: { backgroundColor: "#09090b" },
+        headerTitleStyle: { color: "#fafafa" },
       }}
     >
       <Tabs.Screen
@@ -32,7 +37,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="calendar"
         options={{
-          title: "Calendario",
+          title: "Calendário",
           tabBarIcon: ({ color }) => (
             <SymbolView
               name={{
